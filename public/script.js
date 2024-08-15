@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    loadExpenses(); // Load existing expenses when the page loads
+    loadExpenses(); 
 });
 
 document.getElementById('expense-form').addEventListener('submit', async function(event) {
@@ -9,20 +9,17 @@ document.getElementById('expense-form').addEventListener('submit', async functio
     const expenseHistory = document.getElementById('expense-history');
     const expenseDetails = document.getElementById('expenseDetails');
 
-    // Get input values
     const name = document.getElementById('expense-name').value;
     const desc = document.getElementById('expense-desc').value;
     const category = document.getElementById('expense-category').value;
     const amount = parseFloat(document.getElementById('expense-amount').value);
     const card = document.getElementById('expense-card').value;
 
-    // Validation: Ensure all fields are filled
     if (!name || !desc || !category || isNaN(amount) || !card) {
         alert('All fields are required!');
         return;
     }
 
-    // Create an expense object
     const expense = {
         name: name,
         description: desc,
@@ -32,7 +29,6 @@ document.getElementById('expense-form').addEventListener('submit', async functio
     };
 
     try {
-        // Send expense to the server
         const response = await fetch('/expenses', {
             method: 'POST',
             headers: {
@@ -42,15 +38,12 @@ document.getElementById('expense-form').addEventListener('submit', async functio
         });
         const newExpense = await response.json();
 
-        // Add the new expense to the list and display it
         displayExpense(newExpense);
 
-        // Update total
         const totalElement = document.getElementById('total-amount');
         const currentTotal = parseFloat(totalElement.textContent);
         totalElement.textContent = (currentTotal + amount).toFixed(2);
 
-        // Clear the form
         expenseForm.reset();
     } catch (error) {
         console.error('Error saving expense:', error);
@@ -65,7 +58,6 @@ async function loadExpenses() {
         expenses.forEach(expense => {
             displayExpense(expense);
 
-            // Update total
             const totalElement = document.getElementById('total-amount');
             const currentTotal = parseFloat(totalElement.textContent);
             totalElement.textContent = (currentTotal + expense.amount).toFixed(2);
@@ -87,13 +79,12 @@ function displayExpense(expense) {
     li.dataset.expenseId = expense._id;
     li.classList.add('cursor-pointer', 'hover:bg-gray-100', 'p-2', 'rounded');
 
-    // Add click event to display details
     li.addEventListener('click', function () {
         showExpenseDetails(expense);
     });
 
     li.querySelector('.delete-btn').addEventListener('click', async function (event) {
-        event.stopPropagation(); // Prevent triggering the detail view
+        event.stopPropagation(); 
         await deleteExpense(expense._id);
     });
 

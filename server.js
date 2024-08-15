@@ -7,19 +7,16 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://localhost:27017/finalproject');
+mongoose.connect('mongodb+srv://gutykash:DLd67qwqn1IUO8Au@cluster0.wlfoc2h.mongodb.net/finalproject?retryWrites=true&w=majority&appName=Cluster0')
 
-// Define User Schema
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true }
 });
 const User = mongoose.model('User', userSchema);
 
-// Define Expense Schema
 const expenseSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String },
@@ -59,7 +56,6 @@ app.get('/expense.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'expense.html'));
 });
 
-// Create a new expense
 app.post('/expenses', async (req, res) => {
     try {
         const { name, description, category, card, amount } = req.body;
@@ -72,7 +68,6 @@ app.post('/expenses', async (req, res) => {
     }
 });
 
-// Get all expenses
 app.get('/expenses', async (req, res) => {
     try {
         const expenses = await Expense.find();
@@ -83,7 +78,6 @@ app.get('/expenses', async (req, res) => {
     }
 });
 
-// Delete an expense
 app.delete('/expenses/:id', async (req, res) => {
     try {
         const result = await Expense.deleteOne({ _id: req.params.id });
