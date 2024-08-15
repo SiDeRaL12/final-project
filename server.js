@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect("mongodb+srv://gutykash:DLd67qwqn1IUO8Au@cluster0.wlfoc2h.mongodb.net/finalproject?retryWrites=true&w=majority")
 
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
